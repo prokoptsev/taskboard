@@ -38,7 +38,7 @@ class Status(models.Model):
 @python_2_unicode_compatible
 class Task(models.Model):
     name = models.CharField(_("Name"), max_length=255)
-    status = models.ForeignKey("Status", verbose_name="tasks")
+    status = models.ForeignKey("Status", verbose_name=_("Status"), related_name="tasks")
 
     class Meta:
         verbose_name = _("Task")
@@ -46,3 +46,17 @@ class Task(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.id and not hasattr(self, 'status'):
+            self.set_default_status()
+        super(Task, self).save(*args, **kwargs)
+
+    def set_default_status(self):
+        """
+        Добавить начальный статус.
+
+        Если статус не установлен выбрать из существуюших статусов с наименьшм значением.
+        """
+        if Status.objects.exists():
+            self.status = Status.objects.order_by("name")[0]

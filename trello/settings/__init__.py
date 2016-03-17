@@ -3,8 +3,13 @@ from __future__ import unicode_literals, absolute_import
 import os
 import sys
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+def level_up(path, level):
+    for _ in xrange(level):
+        path = os.path.dirname(path)
+    return path
+
+BASE_DIR = level_up(os.path.dirname(os.path.abspath(__file__)), 2)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -19,8 +24,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
-INSTALLED_APPS = (
+DJANGO_APPS = (
     'flat',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,11 +32,17 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+)
 
+THIRD_PARTY_APPS = (
     'rest_framework',
+)
 
+APPS = (
     'taskboard',
 )
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -106,7 +116,6 @@ if 'test' in sys.argv:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': ':memory:',
-            # 'NAME': os.path.join(BASE_DIR, 'test.sqlite3'),
         }
     }
     MIDDLEWARE_CLASSES = ()
