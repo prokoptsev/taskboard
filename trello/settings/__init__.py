@@ -9,7 +9,7 @@ def level_up(path, level):
         path = os.path.dirname(path)
     return path
 
-BASE_DIR = level_up(os.path.dirname(os.path.abspath(__file__)), 2)
+BASE_DIR = level_up(os.path.abspath(__file__), 3)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -36,6 +36,8 @@ DJANGO_APPS = (
 
 THIRD_PARTY_APPS = (
     'rest_framework',
+    'djng',
+    'ws4redis',
 )
 
 APPS = (
@@ -46,6 +48,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,6 +71,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
+                'ws4redis.context_processors.default',
             ],
         },
     },
@@ -90,7 +95,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
@@ -105,6 +110,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    ("assets", os.path.join(BASE_DIR, 'bower_components')),
+)
+
+WS4REDIS_CONNECTION = {
+    'host': '127.0.0.1',
+    'port': 6379,
+    'db': 1,
+    'password': '',
+}
+WEBSOCKET_URL = '/ws/'
+WS4REDIS_PREFIX = 'ws'
+WS4REDIS_EXPIRE = 7200
 
 if 'test' in sys.argv:
     DEBUG = False

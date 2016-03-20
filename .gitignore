@@ -15,3 +15,7 @@ tests/coverage_html/
 tests/.coverage
 build/
 tests/report/
+
+# javascript
+/node_modules
+/bower_components

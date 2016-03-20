@@ -11,3 +11,5 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + APPS
 MIDDLEWARE_CLASSES += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
+
+WSGI_APPLICATION = 'ws4redis.django_runserver.application'

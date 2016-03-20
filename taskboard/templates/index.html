@@ -1,0 +1,58 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block title %}{% trans "Task board" %}{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "taskboard/css/style.css" %}" />
+{% endblock %}
+{% block extrahead %}
+  <script src="{% static "assets/jquery/dist/jquery.js" %}"></script>
+  <script src="{% static "assets/angular/angular.js" %}"></script>
+  <script src="{% static "assets/angular-cookies/angular-cookies.js" %}"></script>
+  <script src="{% static "djng/js/django-angular.js" %}"></script>
+
+  <script src="{% static "taskboard/js/app/app.js" %}"></script>
+  <script src="{% static "taskboard/js/app/directives/taskDragg.js" %}"></script>
+  <script src="{% static "taskboard/js/app/directives/taskDrop.js" %}"></script>
+  <script src="{% static "taskboard/js/app/services/boardService.js" %}"></script>
+  <script src="{% static "taskboard/js/app/controllers/boardCtrl.js" %}"></script>
+{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name">
+    <a href="{% url 'taskboard:main' %}">{% trans 'Task board' %}</a>
+  </h1>
+{% endblock %}
+
+{% block usertools %}
+<div id="user-tools">
+  <a href="{% url 'admin:index' %}">{% trans 'Admin' %}</a>
+</div>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="content-main" ng-app="TaskBoardApp">
+
+  <div class="drag-container" ng-controller="boardCtrl">
+    <ul class="drag-list">
+      <li class="drag-column" id="{$ column.id $}" task-drop="over" ng-repeat="column in columns">
+        <span class="drag-column-header">
+          <h2>{$ column.name $}</h2>
+        </span>
+        <ul class="drag-inner-list">
+          <li class="drag-item" draggable="true" task-dragg="task" ng-repeat="task in column.tasks">
+            <div class="text">{$ task.name $}</div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+{% endblock %}

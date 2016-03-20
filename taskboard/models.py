@@ -19,7 +19,8 @@ class Status(models.Model):
         (DELIVERED, _('delivered')),
     )
 
-    name = models.IntegerField(_("Name"), choices=AVAILABLE_STATUSES, unique=True)
+    name = models.IntegerField(_("Name"), choices=AVAILABLE_STATUSES, unique=True,
+                               error_messages={'unique': _('This status already exists')})
 
     class Meta:
         verbose_name = _("Status")

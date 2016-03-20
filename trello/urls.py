@@ -18,7 +18,10 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'api/v1/', include("taskboard.api.urls", namespace="taskboard_api"))
+
+    url(r'^', include("taskboard.urls", namespace="taskboard")),
+
+    url(r'api/v1/', include("taskboard.api.urls", namespace="taskboard_api")),
 ]
 
 if settings.DEBUG:
